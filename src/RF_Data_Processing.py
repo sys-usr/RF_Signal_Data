@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
 
 class RFDataProcessing:
     """Class for processing RF data."""
@@ -88,22 +89,45 @@ class RFDataProcessing:
             with open(os.path.join(output_directory, f"{frequency_mhz_str}.csv"), "w", newline="") as f:
                 frequency_df.to_csv(f, index=False)
 
-def analyze_correlation(self):
-    """Compute the correlation matrix and print the correlated categories."""
-    columns_to_analyze = [
-        'Timestamp', 'Frequency', 'Signal Strength', 'Modulation', 'Bandwidth', 'Device Type',
-        'Antenna Type', 'Temperature', 'Precipitation', 'Weather Condition', 'Interference Type',
-        'Device Status'
-    ]
-    corr_matrix = self.signals[columns_to_analyze].corr(numeric_only=True)
-    for col1 in corr_matrix.columns:
-        for col2 in corr_matrix.columns:
-            if col1 != col2:
-                correlation = corr_matrix.loc[col1, col2]
-                if correlation >= 0.5 or correlation <= -0.5:
-                    print(f"Correlation between {col1} and {col2}: {correlation}")
+    def analyze_correlation(self):
+        """Compute the correlation matrix and print the correlated categories."""
+        columns_to_analyze = [
+            'Timestamp', 'Frequency', 'Signal Strength', 'Modulation', 'Bandwidth', 'Device Type',
+            'Antenna Type', 'Temperature', 'Precipitation', 'Weather Condition', 'Interference Type',
+            'Device Status'
+        ]
+        corr_matrix = self.signals[columns_to_analyze].corr(numeric_only=True)
+        correlations_found = False  # Flag to check if any correlations are found
 
+        for col1 in corr_matrix.columns:
+            for col2 in corr_matrix.columns:
+                if col1 != col2:
+                    correlation = corr_matrix.loc[col1, col2]
+                    if correlation >= 0.5 or correlation <= -0.5:
+                        print(f"Correlation between {col1} and {col2}: {correlation}")
+                        correlations_found = True
 
+        if not correlations_found:
+            print("No correlations found in data")
+    
+    def plot_graph(self, filename):
+        """Plot the graph with average 'Signal Strength' for each 'Modulation' type."""
+        df = pd.read_csv(filename)
+        avg_signal_strength = df.groupby('Modulation')['Signal Strength'].mean()
+
+        modulations = avg_signal_strength.index
+        avg_signal_strength_values = avg_signal_strength.values
+
+        plt.barh(modulations, avg_signal_strength_values)
+        plt.xlabel('Average Signal Strength')
+        plt.ylabel('Modulation')
+        plt.title(f"Average Signal Strength by Modulation for {filename}")
+
+        for i, v in enumerate(avg_signal_strength_values):
+            plt.text(v, i, str(round(v, 2)), color='black', ha='left', va='center')
+
+        plt.gca().invert_yaxis()
+        plt.show()
 
 if __name__ == "__main__":
     data_file = "../data/logged_data.csv"
@@ -121,10 +145,10 @@ if __name__ == "__main__":
     for filename in os.listdir(output_directory):
         if filename.endswith(".csv"):
             file_path = os.path.join(output_directory, filename)
-            frequency_df = pd.read_csv(file_path)
             print(f"Correlation analysis for file: {filename}")
-            rf_data_processing.signals = frequency_df  # Update the signals DataFrame
+            rf_data_processing.signals = pd.read_csv(file_path)  # Update the signals DataFrame
             rf_data_processing.analyze_correlation()
+            rf_data_processing.plot_graph(file_path)
             print("-" * 30)
 
     # Analyze correlation on the original signals DataFrame
