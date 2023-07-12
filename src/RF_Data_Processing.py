@@ -88,20 +88,21 @@ class RFDataProcessing:
             with open(os.path.join(output_directory, f"{frequency_mhz_str}.csv"), "w", newline="") as f:
                 frequency_df.to_csv(f, index=False)
 
-    def analyze_correlation(self):
-        """Compute the correlation matrix and print the correlated categories."""
-        columns_to_analyze = [
-            'Timestamp', 'Frequency', 'Signal Strength', 'Modulation', 'Bandwidth', 'Device Type',
-            'Antenna Type', 'Temperature', 'Precipitation', 'Weather Condition', 'Interference Type',
-            'Device Status'
-        ]
-        corr_matrix = self.signals[columns_to_analyze].corr()
-        for col1 in corr_matrix.columns:
-            for col2 in corr_matrix.columns:
-                if col1 != col2:
-                    correlation = corr_matrix.loc[col1, col2]
-                    if correlation >= 0.5 or correlation <= -0.5:
-                        print(f"Correlation between {col1} and {col2}: {correlation}")
+def analyze_correlation(self):
+    """Compute the correlation matrix and print the correlated categories."""
+    columns_to_analyze = [
+        'Timestamp', 'Frequency', 'Signal Strength', 'Modulation', 'Bandwidth', 'Device Type',
+        'Antenna Type', 'Temperature', 'Precipitation', 'Weather Condition', 'Interference Type',
+        'Device Status'
+    ]
+    corr_matrix = self.signals[columns_to_analyze].corr(numeric_only=True)
+    for col1 in corr_matrix.columns:
+        for col2 in corr_matrix.columns:
+            if col1 != col2:
+                correlation = corr_matrix.loc[col1, col2]
+                if correlation >= 0.5 or correlation <= -0.5:
+                    print(f"Correlation between {col1} and {col2}: {correlation}")
+
 
 
 if __name__ == "__main__":
@@ -110,10 +111,23 @@ if __name__ == "__main__":
 
     rf_data_processing.data_description()
     rf_data_processing.create_maps()
-
     modulation_map, device_type_map, antenna_type_map, weather_condition_map, interference_type_map, device_status_map = rf_data_processing.create_maps()
     rf_data_processing.apply_maps(rf_data_processing.signals, modulation_map, device_type_map, antenna_type_map, weather_condition_map, interference_type_map, device_status_map)
-
     rf_data_processing.drop_columns()
     rf_data_processing.frequency_parser()
+
+    # Analyze correlation on each file in the Frequency_data directory
+    output_directory = "../Data/Frequency_data"
+    for filename in os.listdir(output_directory):
+        if filename.endswith(".csv"):
+            file_path = os.path.join(output_directory, filename)
+            frequency_df = pd.read_csv(file_path)
+            print(f"Correlation analysis for file: {filename}")
+            rf_data_processing.signals = frequency_df  # Update the signals DataFrame
+            rf_data_processing.analyze_correlation()
+            print("-" * 30)
+
+    # Analyze correlation on the original signals DataFrame
+    print("Correlation analysis for the original data:")
+    rf_data_processing.signals = pd.read_csv(data_file)  # Restore the original signals DataFrame
     rf_data_processing.analyze_correlation()
