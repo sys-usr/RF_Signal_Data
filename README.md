@@ -49,6 +49,8 @@ This Python script is designed to process RF data by performing various operatio
 
 - Additional functionality or modifications can be implemented by extending the `RFDataProcessing` class.
 
+    - Future planned code would be to make customization possible with argparse 
+
 ## License
 
 This project is free use
