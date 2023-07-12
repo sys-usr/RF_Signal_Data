@@ -1,4 +1,3 @@
-```markdown
 # RF Data Processing
 
 This Python script is designed to process RF data by performing various operations on a given data file. The script utilizes the `RFDataProcessing` class, which provides methods for data description, column mapping, data transformation, and analysis.
@@ -40,6 +39,7 @@ This Python script is designed to process RF data by performing various operatio
    - Correlation analysis: Computes the correlation matrix and prints the correlated categories.
 
 6. The processed data and analysis results will be displayed in the console output.
+   - In this particular case there were no strong correlations (|r| >= .5) therefore the console will not print any found correlations
 
 ## Customization
 
@@ -51,4 +51,4 @@ This Python script is designed to process RF data by performing various operatio
 
 ## License
 
-This project is free use.
+This project is free use
