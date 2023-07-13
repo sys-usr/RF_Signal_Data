@@ -6,51 +6,72 @@ This Python script is designed to process RF data by performing various operatio
 
 - Python 3.x
 - pandas library
+- matplotlib library
 
 ## Usage
 
 1. Install the required dependencies by running the following command:
 
    ```shell
-   pip install pandas
+   pip install pandas matplotlib
    ```
 
-2. Place the RF data file (`logged_data.csv`) in the `data` directory.
+2. Place the RF data file (`logged_data.csv`) in the `RF_Signal_Data/Data` directory.
 
-3. Update the file path in the `__main__` block of the `rf_data_processing.py` script if needed:
-
-   ```python
-   data_file = "data/logged_data.csv"
-   ```
-
-4. Run the script using the following command:
+3. Run the script using the following command:
 
    ```shell
-   python rf_data_processing.py
+   python src/RF_Data_Processing.py
    ```
 
-5. The script will execute the following operations in order:
+4. The script will execute the following operations in order:
 
    - Data description: Prints the summary statistics, information, first 10 rows, and shape of the data.
    - Column mapping: Creates maps for specific columns like Modulation, Device Type, Antenna Type, Weather Condition, Interference Type, and Device Status.
    - Apply mapping: Replaces the column values with their respective mapped values using the created maps.
    - Drop columns: Removes unnecessary columns from the data.
-   - Frequency parsing: Parses the unique frequencies and saves the corresponding data frames to separate CSV files.
-   - Correlation analysis: Computes the correlation matrix and prints the correlated categories.
+   - Frequency parsing: Parses the unique frequencies and saves the corresponding data frames to separate CSV files in the `RF_Signal_Data/Data/Frequency_data` directory.
+   - Modulation parsing: Parses the unique modulations and saves the corresponding data frames to separate CSV files in the `RF_Signal_Data/Data/Modulation_data` directory.
+   - Correlation analysis and graphs: Analyzes correlation and plots graphs for each file in the Frequency_data and Modulation_data directories.
 
-6. The processed data and analysis results will be displayed in the console output.
-   - In this particular case there were no strong correlations (|r| >= .5) therefore the console will not print any found correlations
+5. The processed data and analysis results will be displayed in the console output.
 
 ## Customization
 
-- If you want to add or remove specific operations, modify the `__main__` block of the `rf_data_processing.py` script accordingly.
-
-- To customize the data file location or name, update the `data_file` variable in the `__main__` block.
+- To modify the data file or its location, update the `data_file` variable in the `__main__` block of the `src/RF_Data_Processing.py` script.
 
 - Additional functionality or modifications can be implemented by extending the `RFDataProcessing` class.
 
-    - Future planned code would be to make customization possible with argparse 
+    - Future planned code would be to make customization possible with argparse.
 
 ## License
 
-This project is free use
+This project is free to use.
+
+## File Structure
+
+```
+RF_Data
+└─ RF_Signal_Data
+   ├─ Data
+   │  ├─ Frequency_data
+   │  │  ├─ 100MHz.csv
+   │  │  ├─ 120MHz.csv
+   │  │  ├─ 140MHz.csv
+   │  │  ├─ 160MHz.csv
+   │  │  ├─ 70MHz.csv
+   │  │  └─ 90MHz.csv
+   │  ├─ logged_data.csv
+   │  └─ Modulation_data
+   │     ├─ 1.csv
+   │     ├─ 2.csv
+   │     ├─ 3.csv
+   │     ├─ 4.csv
+   │     ├─ 5.csv
+   │     └─ 6.csv
+   ├─ notebooks
+   │  └─ rf_signal_data.ipynb
+   ├─ README.md
+   └─ src
+      └─ RF_Data_Processing.py
+```
