@@ -1,3 +1,6 @@
+## Data Source
+ - https://www.kaggle.com/datasets/suraj520/rf-signal-data
+
 # RF Data Processing
 
 This Python script is designed to process RF data by performing various operations on a given data file. The script utilizes the `RFDataProcessing` class, which provides methods for data description, column mapping, data transformation, and analysis.
@@ -21,28 +24,28 @@ This Python script is designed to process RF data by performing various operatio
 3. Run the script using the following command:
 
    ```shell
-   python src/RF_Data_Processing.py
+   python src/RF_Data_Processing.py [-h] [-d] [-m] [-a] [-dc] [-f] [-c] [-p] [-all] data_file
    ```
 
-4. The script will execute the following operations in order:
+4. The script accepts the following optional arguments:
 
-   - Data description: Prints the summary statistics, information, first 10 rows, and shape of the data.
-   - Column mapping: Creates maps for specific columns like Modulation, Device Type, Antenna Type, Weather Condition, Interference Type, and Device Status.
-   - Apply mapping: Replaces the column values with their respective mapped values using the created maps.
-   - Drop columns: Removes unnecessary columns from the data.
-   - Frequency parsing: Parses the unique frequencies and saves the corresponding data frames to separate CSV files in the `RF_Signal_Data/Data/Frequency_data` directory.
-   - Modulation parsing: Parses the unique modulations and saves the corresponding data frames to separate CSV files in the `RF_Signal_Data/Data/Modulation_data` directory.
-   - Correlation analysis and graphs: Analyzes correlation and plots graphs for each file in the Frequency_data and Modulation_data directories.
+   - `-h`, `--help`: Show help information for the available arguments.
+   - `-d`, `--data-description`: Print data description.
+   - `-m`, `--create-maps`: Create column maps.
+   - `-a`, `--apply-maps`: Apply column maps.
+   - `-dc`, `--drop-columns`: Drop columns.
+   - `-f`, `--frequency-parser`: Parse frequencies and save to CSV files.
+   - `-c`, `--correlation-analysis`: Perform correlation analysis.
+   - `-p`, `--plot-graphs`: Plot graphs.
+   - `-all`, `--all-functions`: Run all functions.
 
-5. The processed data and analysis results will be displayed in the console output.
+5. The script will execute the selected operations in the specified order.
 
-## Customization
+6. The processed data and analysis results will be displayed in the console output.
 
-- To modify the data file or its location, update the `data_file` variable in the `__main__` block of the `src/RF_Data_Processing.py` script.
+## Graphs
 
-- Additional functionality or modifications can be implemented by extending the `RFDataProcessing` class.
 
-    - Future planned code would be to make customization possible with argparse.
 
 ## License
 
