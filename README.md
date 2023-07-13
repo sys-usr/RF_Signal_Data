@@ -58,6 +58,8 @@ For the above question there are few applicable columns of data from the overall
 
 For cleaning the data I started by removing columns that were immediately not applicable to the proposed question. I dropped these columns from the dataframe for a few reasons. In some cases the value did not change such as location, longitude, latitude, altitude, battery level, power source. Additionally if not already removed I removed columns that would have no bearing on signal strength such as CPU usage, memory usage, system load and more. Lastly I decided to drop the I/Q data column as although potentially applicable there is too much variance to account for in the given amount of time. 
 
+Additionally I created a mapping static function to provide integer values to string values from the dataset for use in the correlation matrix function
+
 The data was otherwise very thorough and complete without any missing data.
 
 
